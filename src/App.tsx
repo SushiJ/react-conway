@@ -22,6 +22,14 @@ function generateEmptyGrid() {
   return rows;
 }
 
+function generateRandomGrid() {
+  const rows: number[][] = [];
+  for (let i = 0; i < ROWS; ++i) {
+    rows.push(Array.from(Array(COLS), () => (Math.random() > 0.75 ? 1 : 0)));
+  }
+  return rows;
+}
+
 function App() {
   const [running, setRunning] = useState<boolean>(false);
   const [grid, setGrid] = useState(() => {
@@ -35,6 +43,7 @@ function App() {
 
   const runningRef = useRef(running);
   runningRef.current = running;
+  console.log(running);
 
   const runSim = useCallback(() => {
     if (!runningRef.current) return;
@@ -63,9 +72,12 @@ function App() {
   }, []);
 
   return (
-    <div className="container" style={{ maxWidth: "1010px" }}>
+    <div
+      className="container"
+      style={{ maxWidth: "1280", marginBottom: "40px" }}
+    >
       <button
-        className="outline"
+        className="outline contrast"
         onClick={() => {
           setRunning(!running);
           if (!running) {
@@ -75,6 +87,14 @@ function App() {
         }}
       >
         {running ? "Stop" : "Start"}
+      </button>
+      <button
+        className="contrast outline"
+        onClick={() => {
+          setGrid(generateRandomGrid);
+        }}
+      >
+        Random
       </button>
       <button
         className="secondary outline"
@@ -88,7 +108,7 @@ function App() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${COLS}, 20px)`,
+          gridTemplateColumns: `repeat(${COLS}, 21px)`,
           placeContent: "center",
           placeItems: "center",
           height: "auto",
@@ -108,7 +128,7 @@ function App() {
                 width: 20,
                 height: 20,
                 backgroundColor: grid[i][k] ? "#d81b60" : undefined,
-                border: "dashed 1px #5b6d80",
+                border: "solid 1px #2D3138",
               }}
             ></div>
           )),
